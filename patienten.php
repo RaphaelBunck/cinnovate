@@ -1,6 +1,6 @@
 <?php
 
-include_once "./help_button/database.php";
+include_once "./Notifications/database.php";
 
 $bericht = "";
 $error = false;
@@ -10,7 +10,7 @@ if(isset($_GET['id']))
 	$id = $_GET['id'];
 	
 	if(is_numeric($id))
-		$query = "SELECT * FROM patients WHERE ID = " . $id;
+		$query = "SELECT * FROM patients WHERE Patient_ID = " . $id;
 	else
 	{
 		$error = true;
@@ -36,7 +36,7 @@ if(!$error)
 					"<div style=\"width: 100%; height: 4em; position: relative; \">
 						<div style=\"color: black; position: absolute; top: 1.5em;\">
 							<a style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\" href=\"/patienten_info.php?id=" . $berichtText['ID'] . "\">
-								" . $berichtText['lastName'] . ", " . $berichtText['name'] . "
+								" . $berichtText['lName'] . ", " . $berichtText['fName'] . $berichtText['insertion'] . "
 							</a>
 						</div>
 						<div style=\"color: black; position: absolute; top: 0; right: 0;\">
@@ -53,7 +53,6 @@ if(!$error)
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, user-scalable=no" />
-		<meta charset="utf-8" />
 		<title>
 			Patienten
 		</title>
