@@ -2,9 +2,9 @@
 
 //config:
 $host = "localhost";
-$databaseName = "";
-$username = "";
-$password = "";
+$databaseName = "cinnovate_users";
+$username = "cinnovate";
+$password = "druif01";
 
 
 $connectionString = "mysql:host=" . $host . ";dbname=" . $databaseName;
