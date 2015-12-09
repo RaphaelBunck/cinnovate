@@ -1,6 +1,7 @@
 <?php
 
-include_once "./Notifications/database.php";
+include_once "./database/database.php";
+
 
 $bericht = "";
 $error = false;
