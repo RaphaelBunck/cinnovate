@@ -1,5 +1,5 @@
 <?php
-	include_once "./help_button/database.php";
+	include_once "../database/database.php";
 	
 	//Set result
 	$r = array(
