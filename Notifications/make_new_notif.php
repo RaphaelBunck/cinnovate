@@ -1,6 +1,6 @@
 <?php
 
-include_once "database.php";
+include_once "../database/database.php";
 
 if(isset($_GET['patient'], $_GET['master'], $_GET['pill'], $_GET['tijd']))
 {
