@@ -86,7 +86,6 @@ if(!$error)
 {
 	$selectPDO = $pdo->query($query);
 	$selectData = $selectPDO->fetchAll(PDO::FETCH_ASSOC);
-	var_dump($selectData);
 	foreach($selectData as $berichtText)
 	{
 		if(is_null($berichtText['profile_picture']))
@@ -97,10 +96,10 @@ if(!$error)
 		$hulpoproepen = $hulpoproepen . 
 					"<div style=\"width: 100%; height: 4em; position: relative; \">
 						<div style=\"color: black; position: absolute; top: 1.5em;\">
-							<a style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\" href=\"/patienten_info.php?id=" . $berichtText['ID'] . "\">
+							<div style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\">
 								" . $berichtText['voornaam'] . ", " . $berichtText['achternaam'] . "
-							</a>
-							<p>Geplaatst op: " . date("D Y F j g:i", $berichtText['insertion']) . "</p>
+							</div>
+							<small>Geplaatst op: " . date("D Y F j g i", $berichtText['insertion']) . "</small>
 						</div>
 						<div style=\"color: black; position: absolute; top: 0; right: 0;\">
 							<img style=\"height: 4em; width: 4em;\" src=\"./profile_picture/" . $profilepicture . "\">
