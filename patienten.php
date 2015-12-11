@@ -48,12 +48,23 @@ if(!$error)
 
 $hulpoproepen = "";
 
-if(isset($_GET['id']))
+if(isset($_GET['master']))
 {
-	$id = $_GET['id'];
+	$masterId = $_GET['master'];
 	
-	if(is_numeric($id))
-		$query = "SELECT * FROM patients WHERE Patient_ID = " . $id;
+	if(is_numeric($masterId))
+		$query = "SELECT 
+	helpcalls.id_time, 
+    master.name, 
+    patients.fName, 
+    patients.lName
+FROM 
+	helpcalls 
+JOIN patients ON 
+	helpcalls.id_patient = patients.Patient_ID 
+JOIN master ON 
+	helpcalls.id_master = master.ID 
+WHERE helpcalls.id_master" = $masterId;
 	else
 	{
 		$error = true;
@@ -61,7 +72,18 @@ if(isset($_GET['id']))
 	}
 } else
 {
-	$query = "SELECT * FROM patients";
+	$query = "SELECT 
+	helpcalls.id_time, 
+    master.name, 
+    patients.fName, 
+    patients.lName
+FROM 
+	helpcalls 
+JOIN patients ON 
+	helpcalls.id_patient = patients.Patient_ID 
+JOIN master ON 
+	helpcalls.id_master = master.ID 
+WHERE 1";
 }
 
 if(!$error)
