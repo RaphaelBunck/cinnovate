@@ -99,7 +99,7 @@ if(!$error)
 							<div style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\">
 								" . $berichtText['voornaam'] . ", " . $berichtText['achternaam'] . "
 							</div>
-							<small>Geplaatst op: " . date("D Y F j g i", $berichtText['tijd']) . "</small>
+							<small>Geplaatst op: " . date("D j F Y g:i", $berichtText['tijd']) . "</small>
 						</div>
 						<div style=\"color: black; position: absolute; top: 0; right: 0;\">
 							<img style=\"height: 4em; width: 4em;\" src=\"./profile_picture/" . $profilepicture . "\">
