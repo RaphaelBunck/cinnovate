@@ -24,7 +24,7 @@ if(isset($_GET['id']))
 if(!$error)
 {
 	$selectPDO = $pdo->query($query);
-	$selectData = $selectPDO->fetchAll();
+	$selectData = $selectPDO->fetchAll(PDO::FETCH_ASSOC);
 	foreach($selectData as $berichtText)
 	{
 		if(is_null($berichtText['profile_picture']))
@@ -54,17 +54,15 @@ if(isset($_GET['master']))
 	
 	if(is_numeric($masterId))
 		$query = "SELECT 
-	helpcalls.id_time, 
-    master.name, 
-    patients.fName, 
-    patients.lName
+	helpcalls.id_time AS \"tijd\", 
+    patients.fName AS \"voornaam\", 
+    patients.lName AS \"achternaam\",
+	patients.profile_picture AS \"profielfoto\"
 FROM 
 	helpcalls 
 JOIN patients ON 
-	helpcalls.id_patient = patients.Patient_ID 
-JOIN master ON 
-	helpcalls.id_master = master.ID 
-WHERE helpcalls.id_master" = $masterId;
+	helpcalls.id_patient = patients.Patient_ID  
+WHERE helpcalls.id_master = " . $masterId;
 	else
 	{
 		$error = true;
@@ -73,36 +71,36 @@ WHERE helpcalls.id_master" = $masterId;
 } else
 {
 	$query = "SELECT 
-	helpcalls.id_time, 
-    master.name, 
-    patients.fName, 
-    patients.lName
+	helpcalls.id_time AS \"tijd\", 
+    patients.fName AS \"voornaam\", 
+    patients.lName AS \"achternaam\",
+	patients.profile_picture AS \"profielfoto\"
 FROM 
 	helpcalls 
 JOIN patients ON 
-	helpcalls.id_patient = patients.Patient_ID 
-JOIN master ON 
-	helpcalls.id_master = master.ID 
+	helpcalls.id_patient = patients.Patient_ID  
 WHERE 1";
 }
 
 if(!$error)
 {
 	$selectPDO = $pdo->query($query);
-	$selectData = $selectPDO->fetchAll();
+	$selectData = $selectPDO->fetchAll(PDO::FETCH_ASSOC);
+	var_dump($selectData);
 	foreach($selectData as $berichtText)
 	{
 		if(is_null($berichtText['profile_picture']))
 			$profilepicture = "generic-profile.png";
 		else
-			$profilepicture = $berichtText['profile_picture'];
+			$profilepicture = $berichtText['profielfoto'];
 		
 		$hulpoproepen = $hulpoproepen . 
 					"<div style=\"width: 100%; height: 4em; position: relative; \">
 						<div style=\"color: black; position: absolute; top: 1.5em;\">
 							<a style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\" href=\"/patienten_info.php?id=" . $berichtText['ID'] . "\">
-								" . $berichtText['lName'] . ", " . $berichtText['fName'] . $berichtText['insertion'] . "
+								" . $berichtText['voornaam'] . ", " . $berichtText['achternaam'] . "
 							</a>
+							<p>Geplaatst op: " . date("D Y F j g:i", $berichtText['insertion']) . "</p>
 						</div>
 						<div style=\"color: black; position: absolute; top: 0; right: 0;\">
 							<img style=\"height: 4em; width: 4em;\" src=\"./profile_picture/" . $profilepicture . "\">
