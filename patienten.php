@@ -35,7 +35,7 @@ if(!$error)
 		$bericht = $bericht . 
 					"<div style=\"width: 100%; height: 4em; position: relative; \">
 						<div style=\"color: black; position: absolute; top: 1.5em;\">
-							<a style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\" href=\"/patienten_info.php?id=" . $berichtText['ID'] . "\">
+							<a style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\" href=\"/patienten_info.php?id=" . $berichtText['Patient_ID'] . "\">
 								" . $berichtText['lName'] . ", " . $berichtText['fName'] . $berichtText['insertion'] . "
 							</a>
 						</div>
@@ -88,7 +88,7 @@ if(!$error)
 	$selectData = $selectPDO->fetchAll(PDO::FETCH_ASSOC);
 	foreach($selectData as $berichtText)
 	{
-		if(is_null($berichtText['profile_picture']))
+		if(is_null($berichtText['profielfoto']))
 			$profilepicture = "generic-profile.png";
 		else
 			$profilepicture = $berichtText['profielfoto'];
@@ -97,7 +97,7 @@ if(!$error)
 					"<div style=\"width: 100%; height: 4em; position: relative; \">
 						<div style=\"color: black; position: absolute; top: 1.5em;\">
 							<div style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\">
-								" . $berichtText['voornaam'] . ", " . $berichtText['achternaam'] . "
+								" . $berichtText['achternaam'] . ", " . $berichtText['voornaam'] . "
 							</div>
 							<small>Hulp geroepen op: " . date("D j F Y g:i", $berichtText['tijd']) . "</small>
 						</div>

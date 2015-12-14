@@ -2,21 +2,39 @@
 
 include_once "./database/database.php";
 $bericht;
-$fout = false;
+$error = false;
 
 if(isset($_GET['id']))
 {
-	if(is_numeric($_GET['id']))
+	$id = $_GET['id'];
+	if(is_numeric($id))
 	{
 		
+		$query = "
+			SELECT 
+				fName AS \"voornaam\", 
+				lName AS \"achternaam\",
+				age AS \"leeftijd\",
+				description AS \"beschrijving\",
+				profile_picture AS \"profielfoto\"
+			FROM
+				patients
+			WHERE
+				Patient_ID = " . $id;
+			
+		$patientPDO = $pdo->query($query);
+		$patientData = $patientPDO->fetchAll(PDO::FETCH_ASSOC);
+		$patient = $patientData[0];
+		
+		if(is_null($patient['profielfoto']))
+			$profielfoto = "generic-profile.png";
+		else
+			$profielfoto = $berichtText['profielfoto'];
+		
 	} else
-	{
-		$fout = true;
-	}
+		$error = true;
 } else
-{
-	$fout = true;
-}
+	$error = true;
 
 ?>
 
@@ -26,7 +44,7 @@ if(isset($_GET['id']))
 		<meta name="viewport" content="width=device-width, user-scalable=no" />
 		 <meta charset="utf-8">
 		<title>	
-			Patiënten informatie <?php if(isset($naam)) echo " - " . $naam;?>
+			Patiënten informatie <?php if(isset($patient['voornaam'])) echo " - " . $$patient['voornaam'];?>
 		</title>
 	</head>
 	<body>
@@ -43,24 +61,22 @@ if(isset($_GET['id']))
 					<fieldset>
 						<legend>Naam:</legend>
 						Voornaam: 
-						<input type="text" name="lastname" value="<?=$voornaam?>">
+						<input type="text" name="lastname" value="<?=$patient['voornaam']?>">
 						<br>
 					
 						Achternaam: 
-						<input type="text" name="firstname" value="<?=$achternaam?>">
+						<input type="text" name="firstname" value="<?=$patient['achternaam']?>">
 					</fieldset>
 					
 					<fieldset>
 						<legend>Overige informatie:</legend>
 						Leeftijd: 
-						<input type="number" name="age" value="<?=$leeftijd?>">
+						<input type="number" name="age" value="<?=$patient['leeftijd']?>">
 						<br>
 						
 						Beschrijving:
 						<br>
-						<textarea name="description">
-							<?=$beschrijving?>
-						</textarea>
+						<textarea name="description"><?=$patient['beschrijving']?></textarea>
 					</fieldset>
 					
 					<input type="submit" value="Opslaan">
