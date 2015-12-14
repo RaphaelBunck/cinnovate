@@ -61,9 +61,9 @@ if(!$error)
 
 $hulpoproepen = "";
 
-if(isset($_GET['master']))
+if(isset($_GET['id']))
 {
-	$masterId = $_GET['master'];
+	$id = $_GET['id'];
 	
 	if(is_numeric($masterId))
 		$query = "SELECT 
@@ -75,7 +75,7 @@ FROM
 	helpcalls 
 JOIN patients ON 
 	helpcalls.id_patient = patients.Patient_ID  
-WHERE helpcalls.id_master = " . $masterId;
+WHERE helpcalls.id_master = " . $id;
 	else
 	{
 		$error = true;
