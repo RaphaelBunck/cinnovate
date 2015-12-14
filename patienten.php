@@ -139,12 +139,14 @@ if(!$error)
 	</head>
 	<body>
 		<div>
+			<?php if($hulpoproepen != ""){?>
 			<div>
 				<h3>
 					Hulpoproepen
 				</h3>
 				<?= $hulpoproepen?>
 			</div>
+			<?php }?>
 			<div>
 				<h3>
 					Patienten:
