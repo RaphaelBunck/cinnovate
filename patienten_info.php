@@ -23,11 +23,9 @@ if(isset($_GET['id']))
 <!DOCTYPE html>
 <html>
 	<head>
-		<title>
-			<meta name="viewport" content="width=device-width, user-scalable=no" />
-			<title>	
-				Patiënten informatie <?php if(isset($naam)) echo " - " . $naam;?>
-			</title>
+		<meta name="viewport" content="width=device-width, user-scalable=no" />
+		<title>	
+			Patiënten informatie <?php if(isset($naam)) echo " - " . $naam;?>
 		</title>
 	</head>
 	<body>
