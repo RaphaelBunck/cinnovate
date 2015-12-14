@@ -56,7 +56,6 @@ if(isset($_GET['id']))
 			</div>
 			<?php if(!$error){?>
 			<div>
-				<img src="./profile_picture/<?=$profielfoto?>">
 				<form action="update_patient.php?id=<?=$_GET['id']?>" method="post">
 					<fieldset>
 						<legend>Naam:</legend>
@@ -81,6 +80,7 @@ if(isset($_GET['id']))
 					
 					<input type="submit" value="Opslaan">
 				</form>
+				<img src="./profile_picture/<?=$profielfoto?>" height="200px" width="200px">
 			</div>
 			<?php } else echo "Er is iets fout gegaan bij het ophalen van de gegevens!";?>
 		</div>
