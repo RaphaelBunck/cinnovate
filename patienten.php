@@ -65,17 +65,21 @@ if(isset($_GET['id']))
 {
 	$id = $_GET['id'];
 	
-	if(is_numeric($masterId))
-		$query = "SELECT 
-	helpcalls.id_time AS \"tijd\", 
-    patients.fName AS \"voornaam\", 
-    patients.lName AS \"achternaam\",
-	patients.profile_picture AS \"profielfoto\"
-FROM 
-	helpcalls 
-JOIN patients ON 
-	helpcalls.id_patient = patients.Patient_ID  
-WHERE helpcalls.id_master = " . $id;
+	if(is_numeric($id))
+		$query = "
+			SELECT 
+				patients.fName AS 'voornaam',
+				patients.lName AS 'achternaam',
+				patients.profile_picture AS 'profielfoto',
+				helpcalls.id_time AS 'tijd'
+			FROM 
+				links 
+			JOIN patients ON 
+				links.patient = patients.Patient_ID
+			JOIN helpcalls ON
+				links.patient = helpcalls.id_patient
+			WHERE 
+				links.master = " . $id;
 	else
 	{
 		$error = true;
