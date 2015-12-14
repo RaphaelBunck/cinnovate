@@ -44,7 +44,7 @@ if(isset($_GET['id']))
 		<meta name="viewport" content="width=device-width, user-scalable=no" />
 		 <meta charset="utf-8">
 		<title>	
-			Patiënten informatie <?php if(isset($patient['voornaam'])) echo " - " . $$patient['voornaam'];?>
+			Patiënten informatie <?php if(isset($patient['voornaam'])) echo " - " . $patient['achternaam'] . ", " . $patient['voornaam'];?>
 		</title>
 	</head>
 	<body>
