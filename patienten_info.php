@@ -24,6 +24,7 @@ if(isset($_GET['id']))
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, user-scalable=no" />
+		 <meta charset="utf-8">
 		<title>	
 			Patiënten informatie <?php if(isset($naam)) echo " - " . $naam;?>
 		</title>

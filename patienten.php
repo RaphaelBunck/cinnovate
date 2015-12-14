@@ -115,6 +115,7 @@ if(!$error)
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, user-scalable=no" />
+		 <meta charset="utf-8">
 		<title>
 			Patienten
 		</title>
