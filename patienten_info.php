@@ -57,7 +57,7 @@ if(isset($_GET['id']))
 			<?php if(!$error){?>
 			<div>
 				<img src="./profile_picture/<?=$profielfoto?>">
-				<form action="update_patient.php" method="post">
+				<form action="update_patient.php?id=<?=$_GET['id']?>" method="post">
 					<fieldset>
 						<legend>Naam:</legend>
 						Voornaam: 
