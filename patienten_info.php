@@ -56,31 +56,35 @@ if(isset($_GET['id']))
 			</div>
 			<?php if(!$error){?>
 			<div>
-				<form action="update_patient.php?id=<?=$_GET['id']?>" method="post">
-					<fieldset>
-						<legend>Naam:</legend>
-						Voornaam: 
-						<input type="text" name="lastname" value="<?=$patient['voornaam']?>">
-						<br>
-					
-						Achternaam: 
-						<input type="text" name="firstname" value="<?=$patient['achternaam']?>">
-					</fieldset>
-					
-					<fieldset>
-						<legend>Overige informatie:</legend>
-						Leeftijd: 
-						<input type="number" name="age" value="<?=$patient['leeftijd']?>">
-						<br>
+				<div>
+					<form action="update_patient.php?id=<?=$_GET['id']?>" method="post">
+						<fieldset>
+							<legend>Naam:</legend>
+							Voornaam: 
+							<input type="text" name="lastname" value="<?=$patient['voornaam']?>">
+							<br>
 						
-						Beschrijving:
-						<br>
-						<textarea name="description"><?=$patient['beschrijving']?></textarea>
-					</fieldset>
+							Achternaam: 
+							<input type="text" name="firstname" value="<?=$patient['achternaam']?>">
+						</fieldset>
+						
+						<fieldset>
+							<legend>Overige informatie:</legend>
+							Leeftijd: 
+							<input type="number" name="age" value="<?=$patient['leeftijd']?>">
+							<br>
+							
+							Beschrijving:
+							<br>
+							<textarea name="description"><?=$patient['beschrijving']?></textarea>
+						</fieldset>
 					
-					<input type="submit" value="Opslaan">
-				</form>
-				<img src="./profile_picture/<?=$profielfoto?>" height="200px" width="200px">
+						<input type="submit" value="Opslaan">
+					</form>
+				</div>
+				<div>
+					<img src="./profile_picture/<?=$profielfoto?>" height="200px" width="200px">
+				</div>
 			</div>
 			<?php } else echo "Er is iets fout gegaan bij het ophalen van de gegevens!";?>
 		</div>
