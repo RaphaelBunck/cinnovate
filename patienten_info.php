@@ -50,9 +50,6 @@ if(isset($_GET['id']))
 	<body>
 		<div>
 			<div>
-				<a href="./patienten.php">
-					<
-				</a>
 				<h3>
 					Patientinformatie
 				</h3>
