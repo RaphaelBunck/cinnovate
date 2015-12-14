@@ -51,8 +51,11 @@ if(isset($_GET['id']))
 		<div>
 			<div>
 				<a href="./patienten.php">
-					<= Vorige Pagina
+					<
 				</a>
+				<h3>
+					Patientinformatie
+				</h3>
 			</div>
 			<?php if(!$error){?>
 			<div>
