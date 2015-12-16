@@ -12,15 +12,16 @@ if(isset($_GET['id']))
 	if (is_numeric($id)) {
         $query = "SELECT 
 	master.name AS \"master_id\",
-    patients.lName AS \"patient_name\",
-    pills.Pill_Name AS \"Pill_name\",
-    pillnotifications.Time_ID AS \"Time\"
+	patients.fName AS \"voornaam\", 
+    patients.lName AS \"achternaam\",
+    pills.Pill_Name AS \"pill_naam\",
+    pillnotifications.Time_ID AS \"tijd\"
 FROM 
 	pillnotifications
 JOIN master ON
 	pillnotifications.Master_ID = master.ID
 JOIN pills ON
-	pillnotifications.Pill_ID = pills.Pill_ID
+	pillnotifications.Pill_ID = pills.Pill_Name
 JOIN patients ON
 	pillnotifications.Patient_ID = patients.Patient_ID
 WHERE
