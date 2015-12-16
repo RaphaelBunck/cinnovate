@@ -1,5 +1,5 @@
 <?php
-	include_once "../help_button/database.php";
+	include_once "../database/database.php";
 	
 	try
 	{
@@ -7,14 +7,14 @@
 		{
 			$patient = $_POST['patient'];
 			$master = $_POST['master'];
-		
-			$DatabaseQuery = "INSERT INTO links (master, patient) VALUES (:master, :patient)";
+			
+			$DatabaseQuery = "INSERT INTO links (master, patient) VALUES (:master, :patient);";
 			$dataPDO = $pdo->prepare($DatabaseQuery);
 			$dataPDO->bindParam(":master", $master);
 			$dataPDO->bindParam(":patient", $patient);
 		
 			$dataPDO->execute();
-		
+			
 			echo "U bent in de database gezet!";
 		} else
 		{
@@ -24,6 +24,7 @@
 	} catch (PDOException $e)
 	{
 		echo "Error while executing query!";
+		echo $e;
 	}
 	
 	//Set result
