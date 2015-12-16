@@ -19,3 +19,6 @@ Wanneer er door de verzorger pillen en de bijhorende tijden worden ingevoerd, kr
 
 ### Bijhouden van patiënteninfo
 Het bijhouden van de info over de patiënt kan ook worden gedaan in de app.
+
+## Live chat
+Chat verbinding tussen verzorger en patiënt
