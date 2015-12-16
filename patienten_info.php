@@ -61,11 +61,11 @@ if(isset($_GET['id']))
 						<fieldset>
 							<legend>Naam:</legend>
 							Voornaam: 
-							<input type="text" name="lastname" value="<?=$patient['voornaam']?>">
+							<input type="text" name="firstname" value="<?=$patient['voornaam']?>">
 							<br>
 						
 							Achternaam: 
-							<input type="text" name="firstname" value="<?=$patient['achternaam']?>">
+							<input type="text" name="lastname" value="<?=$patient['achternaam']?>">
 						</fieldset>
 						
 						<fieldset>
