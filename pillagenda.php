@@ -11,6 +11,7 @@ if(isset($_GET['id']))
 	
 	if (is_numeric($id)) {
         $query = "SELECT 
+	pillnotifications.Notif_ID AS \"Notif_ID\",
 	master.name AS \"master_id\",
     patients.lName AS \"patient_name\",
     pills.Pill_Name AS \"Pill_name\",
@@ -31,7 +32,21 @@ WHERE
     }
 } else
 {
-	$query = "SELECT * FROM pillnotifications";
+	$query = "SELECT 
+	pillnotifications.Notif_ID AS \"Notif_ID\",
+	master.name AS \"master_id\",
+    patients.lName AS \"patient_name\",
+    pills.Pill_Name AS \"Pill_name\",
+    pillnotifications.Time_ID AS \"Time\"
+FROM 
+	pillnotifications
+JOIN master ON
+	pillnotifications.Master_ID = master.ID
+JOIN pills ON
+	pillnotifications.Pill_ID = pills.Pill_ID
+JOIN patients ON
+	pillnotifications.Patient_ID = patients.Patient_ID
+WHERE 1";
 }
 
 if(!$error)
@@ -45,12 +60,13 @@ if(!$error)
         } else {
             $profilepicture = $berichtText['profile_picture'];
         }
+		
 
         $bericht = $bericht . 
 					"<div style=\"width: 100%; height: 4em; position: relative; \">
 						<div style=\"color: black; position: absolute; top: 1.5em;\">
 							<a style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\" href=\"/pillagenda.php?id=" . $berichtText['Patient_ID'] . "\">
-								" . "NotifID: " . $berichtText['Notif_ID'] . " PillID: " .   $berichtText['Pill_ID'] . " PatientID:  " . $berichtText['Patient_ID'] . " MasterID: " . $berichtText['Master_ID'] . " TimeID: ". $berichtText['Time_ID'] . "
+								" . "Notificatie Nummer: " . $berichtText['Notif_ID'] . " | Pill: " .   $berichtText['Pill_name'] . " | Patient:  " . $berichtText['patient_name'] . " | Verzorger: " . $berichtText['master_id'] . " | Tijdcode: ". $berichtText['Time'] . "
 							</a>
 						
 							</div>
@@ -70,8 +86,6 @@ if(!$error)
 		</title>
 	</head>
 	<body>
-	<pre>
-		<?php var_dump($selectData);?></pre>
 		<?= $bericht?>
 	</body>
 </html>
