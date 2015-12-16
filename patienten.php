@@ -10,7 +10,20 @@ if(isset($_GET['id']))
 	$id = $_GET['id'];
 	
 	if(is_numeric($id))
-		$query = "SELECT * FROM patients WHERE Patient_ID = " . $id;
+		$query = "
+			SELECT 
+				patients.fName AS 'voornaam',
+				patients.lName AS 'achternaam',
+				patients.Patient_ID AS 'id',
+				patients.insertion,
+				patients.profile_picture AS 'profielfoto'
+			FROM 
+				links 
+
+			JOIN patients ON 
+				links.patient = patients.Patient_ID 
+			WHERE 
+				links.master = " . $id;
 	else
 	{
 		$error = true;
@@ -18,7 +31,7 @@ if(isset($_GET['id']))
 	}
 } else
 {
-	$query = "SELECT * FROM patients";
+	$query = "SELECT fName AS 'voornaam', lName AS 'achternaam', Patient_ID As 'id', insertion, profile_picture AS 'profielfoto' FROM patients";
 }
 
 if(!$error)
@@ -27,16 +40,16 @@ if(!$error)
 	$selectData = $selectPDO->fetchAll(PDO::FETCH_ASSOC);
 	foreach($selectData as $berichtText)
 	{
-		if(is_null($berichtText['profile_picture']))
+		if(is_null($berichtText['profielfoto']))
 			$profilepicture = "generic-profile.png";
 		else
-			$profilepicture = $berichtText['profile_picture'];
+			$profilepicture = $berichtText['profielfoto'];
 		
 		$bericht = $bericht . 
 					"<div style=\"width: 100%; height: 4em; position: relative; \">
 						<div style=\"color: black; position: absolute; top: 1.5em;\">
-							<a style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\" href=\"/patienten_info.php?id=" . $berichtText['ID'] . "\">
-								" . $berichtText['lName'] . ", " . $berichtText['fName'] . $berichtText['insertion'] . "
+							<a style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\" href=\"/patienten_info.php?id=" . $berichtText['id'] . "\">
+								" . $berichtText['achternaam'] . ", " . $berichtText['voornaam'] . $berichtText['insertion'] . "
 							</a>
 						</div>
 						<div style=\"color: black; position: absolute; top: 0; right: 0;\">
@@ -48,21 +61,25 @@ if(!$error)
 
 $hulpoproepen = "";
 
-if(isset($_GET['master']))
+if(isset($_GET['id']))
 {
-	$masterId = $_GET['master'];
+	$id = $_GET['id'];
 	
-	if(is_numeric($masterId))
-		$query = "SELECT 
-	helpcalls.id_time AS \"tijd\", 
-    patients.fName AS \"voornaam\", 
-    patients.lName AS \"achternaam\",
-	patients.profile_picture AS \"profielfoto\"
-FROM 
-	helpcalls 
-JOIN patients ON 
-	helpcalls.id_patient = patients.Patient_ID  
-WHERE helpcalls.id_master = " . $masterId;
+	if(is_numeric($id))
+		$query = "
+			SELECT 
+				patients.fName AS 'voornaam',
+				patients.lName AS 'achternaam',
+				patients.profile_picture AS 'profielfoto',
+				helpcalls.id_time AS 'tijd'
+			FROM 
+				links 
+			JOIN patients ON 
+				links.patient = patients.Patient_ID
+			JOIN helpcalls ON
+				links.patient = helpcalls.id_patient
+			WHERE 
+				links.master = " . $id;
 	else
 	{
 		$error = true;
@@ -88,7 +105,7 @@ if(!$error)
 	$selectData = $selectPDO->fetchAll(PDO::FETCH_ASSOC);
 	foreach($selectData as $berichtText)
 	{
-		if(is_null($berichtText['profile_picture']))
+		if(is_null($berichtText['profielfoto']))
 			$profilepicture = "generic-profile.png";
 		else
 			$profilepicture = $berichtText['profielfoto'];
@@ -97,9 +114,9 @@ if(!$error)
 					"<div style=\"width: 100%; height: 4em; position: relative; \">
 						<div style=\"color: black; position: absolute; top: 1.5em;\">
 							<div style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\">
-								" . $berichtText['voornaam'] . ", " . $berichtText['achternaam'] . "
+								" . $berichtText['achternaam'] . ", " . $berichtText['voornaam'] . "
 							</div>
-							<small>Geplaatst op: " . date("D j F Y g:i", $berichtText['tijd']) . "</small>
+							<small>Hulp geroepen op: " . date("D j F Y g:i", $berichtText['tijd']) . "</small>
 						</div>
 						<div style=\"color: black; position: absolute; top: 0; right: 0;\">
 							<img style=\"height: 4em; width: 4em;\" src=\"./profile_picture/" . $profilepicture . "\">
@@ -115,18 +132,21 @@ if(!$error)
 <html>
 	<head>
 		<meta name="viewport" content="width=device-width, user-scalable=no" />
+		 <meta charset="utf-8">
 		<title>
 			Patienten
 		</title>
 	</head>
 	<body>
 		<div>
+			<?php if($hulpoproepen != ""){?>
 			<div>
 				<h3>
 					Hulpoproepen
 				</h3>
 				<?= $hulpoproepen?>
 			</div>
+			<?php }?>
 			<div>
 				<h3>
 					Patienten:
