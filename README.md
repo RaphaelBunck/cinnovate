@@ -26,8 +26,9 @@ Het bijhouden van de info over de patiënt kan ook worden gedaan in de app.
 Chat verbinding tussen verzorger en patiënt.
 
 ### Hulpfunctie
-* Hulp oproepen van verzorger
-nope
+#### Hulp oproepen van verzorger
+Als er op deze hulpfunctie gedrukt word, word er een telefoon verbinding gemaakt tussen de patiënt en verzorger.
 
-* Hulp oproepen van alarmcentrale (112)
-nee
+#### Hulp oproepen van alarmcentrale (112)
+Als er op deze hulpfunctie gedrukt word, word er een telefoon verbinding gemaakt tussen de patiënt en de meldkamer (112).
+
