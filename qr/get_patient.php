@@ -1,5 +1,20 @@
 <?php
-	include_once "./help_button/database.php";
+	include_once "../help_button/database.php";
+	try
+	{
+		$DatabaseQuery = "INSERT INTO links (master, patient) VALUES (?, ?)";
+		$dataPDO = $pdo->prepare($DatabaseQuery);
+		$dataPDO->bind_param("ii", $m, $p);
+
+		$p = $_POST['patient'];
+		$m = $_POST['master'];
+		$dataPDO->execute();
+		
+		echo "U bent in de database gezet!";
+	} catch (PDOException $e)
+	{
+		echo "Error while executing query!";
+	}
 	
 	//Set result
 	$r = array(

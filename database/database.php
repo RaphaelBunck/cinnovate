@@ -24,7 +24,7 @@ try
 	</head>
 	<body>
             <h1>
-		Their is a database error.
+		There is a database error.
             </h1>
             <p>
 		The error returned is:
