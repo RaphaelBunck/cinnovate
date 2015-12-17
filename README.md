@@ -7,6 +7,7 @@ De app is bedoeld voor dementen en de verzorgers van de dementen.
 * [Verbinding maken met de patient en andersom](#verbinding-maken)
 * [Tijden voor pilleninname bijhouden](#pillen)
 * [Patiënten bekijken en informatie over hen bijhouden](#bijhouden-van-patiënteninfo)
+* [Live chat tussen Patiënten en Verzorger](#live-chat)
 
 
 ### Verbinding maken
