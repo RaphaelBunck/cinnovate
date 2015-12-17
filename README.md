@@ -7,6 +7,8 @@ De app is bedoeld voor dementen en de verzorgers van de dementen.
 * [Verbinding maken met de patient en andersom](#verbinding-maken)
 * [Tijden voor pilleninname bijhouden](#pillen)
 * [Patiënten bekijken en informatie over hen bijhouden](#bijhouden-van-patiënteninfo)
+* [Live chat tussen Patiënten en Verzorger](#live-chat)
+* [Hulpfunctie](#hulpfunctie)
 
 
 ### Verbinding maken
@@ -19,3 +21,14 @@ Wanneer er door de verzorger pillen en de bijhorende tijden worden ingevoerd, kr
 
 ### Bijhouden van patiënteninfo
 Het bijhouden van de info over de patiënt kan ook worden gedaan in de app.
+
+### Live chat
+Chat verbinding tussen verzorger en patiënt.
+
+### Hulpfunctie
+#### Hulp oproepen van verzorger
+Als er op deze hulpfunctie gedrukt word, word er een telefoon verbinding gemaakt tussen de patiënt en verzorger.
+
+#### Hulp oproepen van alarmcentrale (112)
+Als er op deze hulpfunctie gedrukt word, word er een telefoon verbinding gemaakt tussen de patiënt en de meldkamer (112).
+
