@@ -139,7 +139,7 @@ INSERT INTO `patients` (`Patient_ID`, `fName`, `insertion`, `lName`, `age`, `des
 INSERT INTO `patients` (`Patient_ID`, `fName`, `insertion`, `lName`, `age`, `description`, `profile_picture`) VALUES(6, 'Max', '', 'van der Horst', 18, 'Gekke hacker jongï¿½h', NULL);
 INSERT INTO `patients` (`Patient_ID`, `fName`, `insertion`, `lName`, `age`, `description`, `profile_picture`) VALUES(7, 'Raphael', '', 'Bunck', 16, 'Die jolige jongen toch', NULL);
 INSERT INTO `patients` (`Patient_ID`, `fName`, `insertion`, `lName`, `age`, `description`, `profile_picture`) VALUES(8, 'Ruben', '', 'Siekman', 17, '#AdventureSquat', NULL);
-INSERT INTO `patients` (`Patient_ID`, `fName`, `insertion`, `lName`, `age`, `description`, `profile_picture`) VALUES(9, 'Scorpio', '', 'Baardwijk', 16, 'Aka waardeloze ****\r\nDe benjamin van het stel.', NULL);
+INSERT INTO `patients` (`Patient_ID`, `fName`, `insertion`, `lName`, `age`, `description`, `profile_picture`) VALUES(9, 'Scorpio', '', 'Baardwijk', 16, 'De benjamin van het stel.', NULL);
 
 -- --------------------------------------------------------
 

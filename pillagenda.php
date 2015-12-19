@@ -12,18 +12,18 @@ if(isset($_GET['id']))
 	if (is_numeric($id)) {
         $query = "SELECT 
 	pillnotifications.Notif_ID AS \"Notif_ID\",
-	master.name AS \"master_id\",
-    patients.lName AS \"patient_name\",
+	master.voornaam AS \"master_id\",
+    patients.achternaam AS \"patient_name\",
     pills.Pill_Name AS \"Pill_name\",
     pillnotifications.Time_ID AS \"Time\"
 FROM 
 	pillnotifications
 JOIN master ON
-	pillnotifications.Master_ID = master.ID
+	pillnotifications.Master_ID = master.id
 JOIN pills ON
 	pillnotifications.Pill_ID = pills.Pill_ID
 JOIN patients ON
-	pillnotifications.Patient_ID = patients.Patient_ID
+	pillnotifications.Patient_ID = patients.id
 WHERE
 	pillnotifications.Patient_ID = " . $id;
     } else {
@@ -34,18 +34,18 @@ WHERE
 {
 	$query = "SELECT 
 	pillnotifications.Notif_ID AS \"Notif_ID\",
-	master.name AS \"master_id\",
-    patients.lName AS \"patient_name\",
+	master.voornaam AS \"master_id\",
+    patients.achternaam AS \"patient_name\",
     pills.Pill_Name AS \"Pill_name\",
     pillnotifications.Time_ID AS \"Time\"
 FROM 
 	pillnotifications
 JOIN master ON
-	pillnotifications.Master_ID = master.ID
+	pillnotifications.Master_ID = master.id
 JOIN pills ON
 	pillnotifications.Pill_ID = pills.Pill_ID
 JOIN patients ON
-	pillnotifications.Patient_ID = patients.Patient_ID
+	pillnotifications.Patient_ID = patients.id
 WHERE 1";
 }
 

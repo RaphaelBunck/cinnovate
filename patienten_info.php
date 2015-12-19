@@ -1,36 +1,14 @@
 <?php
 
-include_once "./database/database.php";
-$bericht;
-$error = false;
+include_once "./include/patient.php";
 
 if(isset($_GET['id']))
 {
 	$id = $_GET['id'];
 	if(is_numeric($id))
 	{
-		
-		$query = "
-			SELECT 
-				fName AS \"voornaam\", 
-				lName AS \"achternaam\",
-				age AS \"leeftijd\",
-				description AS \"beschrijving\",
-				profile_picture AS \"profielfoto\"
-			FROM
-				patients
-			WHERE
-				Patient_ID = " . $id;
-			
-		$patientPDO = $pdo->query($query);
-		$patientData = $patientPDO->fetchAll(PDO::FETCH_ASSOC);
-		$patient = $patientData[0];
-		
-		if(is_null($patient['profielfoto']))
-			$profielfoto = "generic-profile.png";
-		else
-			$profielfoto = $berichtText['profielfoto'];
-		
+		$patient = new Patient($id);
+		$geboortedatum = $patient->getGeboortedatum();
 	} else
 		$error = true;
 } else
@@ -44,7 +22,7 @@ if(isset($_GET['id']))
 		<meta name="viewport" content="width=device-width, user-scalable=no" />
 		 <meta charset="utf-8">
 		<title>	
-			Patiënten informatie <?php if(isset($patient['voornaam'])) echo " - " . $patient['achternaam'] . ", " . $patient['voornaam'];?>
+			Patiënten informatie <?php if(isset($patient)) echo " - " . $patient->getAchternaam() . ", " . $patient->getVoornaam();?>
 		</title>
 	</head>
 	<body>
@@ -57,26 +35,28 @@ if(isset($_GET['id']))
 			<?php if(!$error){?>
 			<div>
 				<div>
-					<form action="update_patient.php?id=<?=$_GET['id']?>" method="post">
+					<form action="update_patient.php?id=<?=$id?>" method="post">
 						<fieldset>
 							<legend>Naam:</legend>
 							Voornaam: 
-							<input type="text" name="firstname" value="<?=$patient['voornaam']?>">
+							<input type="text" name="voornaam" value="<?=$patient->getVoornaam()?>">
 							<br>
 						
 							Achternaam: 
-							<input type="text" name="lastname" value="<?=$patient['achternaam']?>">
+							<input type="text" name="achternaam" value="<?=$patient->getAchternaam()?>">
 						</fieldset>
 						
 						<fieldset>
 							<legend>Overige informatie:</legend>
-							Leeftijd: 
-							<input type="number" name="age" value="<?=$patient['leeftijd']?>">
-							<br>
-							
+							<fieldset>
+								<legend>Leeftijd:</legend>
+								<input type="number" name="ageDag" value="<?=$geboortedatum->getDag()?>">
+								<input type="number" name="ageMaand" value="<?=$geboortedatum->getMaand()?>">
+								<input type="number" name="ageJaar" value="<?=$geboortedatum->getJaar()?>">
+							</fieldset>
 							Beschrijving:
 							<br>
-							<textarea name="description"><?=$patient['beschrijving']?></textarea>
+							<textarea name="beschrijving"><?=$patient->getBeschrijving?></textarea>
 						</fieldset>
 					
 						<input type="submit" value="Opslaan">
