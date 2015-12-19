@@ -60,7 +60,7 @@ class Hulpoproep
 		return "<div style=\"width: 100%; height: 4em; position: relative; \">
 						<div style=\"color: black; position: absolute; top: 1.5em;\">
 							<div style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\">
-								" . $this->getPatient()->achternaam . ", " . $this->getPatient()->voornaam . "
+								" . $this->getPatient()->getAchternaam() . ", " . $this->getPatient()->getVoornaam() . "
 							</div>
 							<small>Hulp geroepen op: " . date("D j F Y g:i", $this->getTijd()) . "</small>
 						</div>

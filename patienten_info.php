@@ -7,7 +7,7 @@ if(isset($_GET['id']))
 	$id = $_GET['id'];
 	if(is_numeric($id))
 	{
-		$patient = new Patient($id);
+		$patient = new Patient((int) $id);
 		$geboortedatum = $patient->getGeboortedatum();
 	} else
 		$error = true;
@@ -32,7 +32,7 @@ if(isset($_GET['id']))
 					Patientinformatie
 				</h3>
 			</div>
-			<?php if(!$error){?>
+			<?php if(!isset($error)){?>
 			<div>
 				<div>
 					<form action="update_patient.php?id=<?=$id?>" method="post">
@@ -56,14 +56,14 @@ if(isset($_GET['id']))
 							</fieldset>
 							Beschrijving:
 							<br>
-							<textarea name="beschrijving"><?=$patient->getBeschrijving?></textarea>
+							<textarea name="beschrijving"><?=$patient->getBeschrijving()?></textarea>
 						</fieldset>
 					
 						<input type="submit" value="Opslaan">
 					</form>
 				</div>
 				<div>
-					<img src="./profile_picture/<?=$profielfoto?>" height="200px" width="200px">
+					<img src="./profile_picture/<?=$patient->getProfielfoto()?>" height="200px" width="200px">
 				</div>
 			</div>
 			<?php } else echo "Er is iets fout gegaan bij het ophalen van de gegevens!";?>

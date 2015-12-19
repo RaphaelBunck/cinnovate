@@ -70,8 +70,8 @@ if(isset($_GET['id']))
 				
 				foreach($patienten as $patient)
 				{
-					$patientObject = new Patient((int) $patient['id']);
-					echo $patientObject->getListViewData();
+					$patient = new Patient((int) $patient['id']);
+					echo $patient->getListViewData();
 				}
 				?>
 			</div>

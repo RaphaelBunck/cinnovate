@@ -50,7 +50,7 @@ class Verzorger extends Persoon
 		
 			$queryPDO = $pdo->query($query);
 			$verzorgerResultaat = $queryPDO->fetch(PDO::FETCH_ASSOC);
-		
+			
 			$this->voornaam = $verzorgerResultaat['voornaam'];
 			$this->achternaam = $verzorgerResultaat['achternaam'];
 			$this->geboortedatum = Datum::getDatabaseWaarde((int) $verzorgerResultaat['geboortedatum']);

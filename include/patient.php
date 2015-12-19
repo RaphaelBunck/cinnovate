@@ -15,7 +15,7 @@ class Patient extends Persoon
 		{
 			if(is_int($patientID))
 			{
-				$this->setID( $patientID);
+				$this->setID($patientID);
 				$this->getDatabaseWaarde();
 			} else
 				$this->PatientUpdate();
@@ -54,10 +54,12 @@ class Patient extends Persoon
 			$queryPDO = $pdo->query($query);
 			$patientResultaat = $queryPDO->fetch(PDO::FETCH_ASSOC);
 			
-			$this->voornaam = $patientResultaat['voornaam'];
-			$this->achternaam = $patientResultaat['achternaam'];
-			$this->geboortedatum = Datum::getDatabaseWaarde((int) $patientResultaat['geboortedatum']);
-			$this->beschrijving = $patientResultaat['beschrijving'];
+			$geboortedatum = Datum::getDatabaseWaarde((int) $patientResultaat['geboortedatum']);			
+			
+			parent::setVoornaam($patientResultaat['voornaam']);
+			parent::setAchternaam($patientResultaat['achternaam']);
+			parent::setGeboortedatum($geboortedatum->getDag(), $geboortedatum->getMaand(), $geboortedatum->getJaar());
+			parent::setBeschrijving($patientResultaat['beschrijving']);
 			$this->setProfielfoto($patientResultaat['profielfoto']);
 		} catch (PDOException $e)
 		{
@@ -84,10 +86,10 @@ class Patient extends Persoon
 				id = " . $id . ";";
 		
 			$dataPDO = $pdo->prepare($query);
-			$dataPDO->bindParam(":voornaam", $this->getVoornaam());
-			$dataPDO->bindParam(":achternaam", $this->getAchternaam());
-			$dataPDO->bindParam(":geboortedatum", $this->getGeboortedatum()->naarDatabaseWaarde());
-			$dataPDO->bindParam(":beschrijving", $this->getBeschrijving());
+			$dataPDO->bindParam(":voornaam", parent::getVoornaam());
+			$dataPDO->bindParam(":achternaam", parent::getAchternaam());
+			$dataPDO->bindParam(":geboortedatum", parent::getGeboortedatum()->naarDatabaseWaarde());
+			$dataPDO->bindParam(":beschrijving", parent::getBeschrijving());
 			$dataPDO->bindParam(":profielfoto", $this->getProfielfoto());
 			$dataPDO->execute();
 		} catch (PDOException $e)
@@ -141,7 +143,7 @@ class Patient extends Persoon
 		return "<div style=\"width: 100%; height: 4em; position: relative; \">
 					<div style=\"color: black; position: absolute; top: 1.5em;\">
 						<a style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\" href=\"/patienten_info.php?id=" . $this->getID() . "\">
-							" . $this->achternaam . ", " . $this->voornaam . "
+							" . parent::getAchternaam() . ", " . parent::getVoornaam() . "
 						</a>
 					</div>
 					<div style=\"color: black; position: absolute; top: 0; right: 0;\">

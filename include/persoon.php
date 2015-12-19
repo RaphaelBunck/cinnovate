@@ -83,13 +83,13 @@ class Datum
 	
 	function Datum($dagInput, $maandInput, $jaarInput)
 	{
-		if(is_int($dagInput) and is_int($maandInput) and is_int($jaarInput))
+		if(is_numeric($dagInput) and is_numeric($maandInput) and is_numeric($jaarInput))
 		{
 			try
 			{
-				$this->dag = $this->setDag($dagInput);
-				$this->maand = $this->setMaand($maandInput);
-				$this->jaar = $this->setJaar($jaarInput);
+				$this->setDag($dagInput);
+				$this->setMaand($maandInput);
+				$this->setJaar($jaarInput);
 			} catch(Exception $e)
 			{
 				throw new Exception($e);
