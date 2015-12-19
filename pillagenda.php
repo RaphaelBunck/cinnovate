@@ -1,6 +1,6 @@
 <?php
 
-include_once "./database/database.php";
+include_once "./include/database.php";
 
 $bericht = "";
 $error = false;

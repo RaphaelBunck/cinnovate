@@ -1,6 +1,6 @@
 <?php
 
-include_once "../database/database.php";
+include_once "database.php";
 
 class Persoon
 {
@@ -12,66 +12,66 @@ class Persoon
 
 	function getVoornaam()
 	{
-		return $voornaam;
+		return $this->voornaam;
 	}
 	
 	function setVoornaam($voornaamInput)
 	{
 		if(is_string($voornaamInput))
-			$voornaam = $voornaamInput;
+			$this->voornaam = $voornaamInput;
 		else
 			throw new Exception("De waarde \$voornaamInput mag alleen maar een string zijn.");
 	}
 	
 	function getAchternaam()
 	{
-		return $achternaam;
+		return $this->achternaam;
 	}
 	
 	function setAchternaam($achternaamInput)
 	{
 		if(is_string($achternaamInput))
-			$achternaam = $achternaamInput;
+			$this->achternaam = $achternaamInput;
 		else
 			throw new Exception("De waarde \$achternaamInput mag alleen maar een string zijn.");
 	}
 	
 	function getID()
 	{
-		return $id;
+		return $this->id;
 	}
 	
 	function setID($idInput)
 	{
-		if(is_int($id))
-			$id = $idInput;
+		if(is_int($idInput))
+			$this->id = $idInput;
 		else
 			throw new Exception("De waarde \$idInput mag alleen maar een integerer zijn.");
 	}
 	
 	function getBeschrijving()
 	{
-		return $beschrijving;
+		return $this->beschrijving;
 	}
 	
 	function setBeschrijving($beschrijvingInput)
 	{
 		if(is_string($beschrijvingInput))
-			$beschrijving = $beschrijvingInput;
+			$this->beschrijving = $beschrijvingInput;
 		else
 			throw new Exception("De waarde \$beschrijvingInput mag alleen maar een string zijn.");
 	}
 	
 	function getGeboortedatum()
 	{
-		return $geboortedatum;
+		return $this->geboortedatum;
 	}
 	
 	function setGeboortedatum($dag, $maand, $jaar)
 	{
 		if(is_int($dag) and is_int($maand) and is_int($jaar))
 		{
-			$geboortedatum = new Datum($dag, $maand, $jaar);
+			$this->geboortedatum = new Datum($dag, $maand, $jaar);
 		} else
 			throw new Exception("De ingevoerde waardes zijn geen geldige getallen.");
 	}
@@ -87,12 +87,12 @@ class Datum
 		{
 			try
 			{
-				$dag = setDag($dagInput);
-				$maand = setMaand($maandInput);
-				$jaar = setJaar($jaarInput);
-			} catch($e)
+				$this->dag = $this->setDag($dagInput);
+				$this->maand = $this->setMaand($maandInput);
+				$this->jaar = $this->setJaar($jaarInput);
+			} catch(Exception $e)
 			{
-				echo $e;
+				throw new Exception($e);
 			}
 		} else
 			throw new Exception("De ingevulde waardes zijn geen integers, gebruik voor de dagen, maanden en jaren alstublieft gehele getallen");
@@ -100,7 +100,7 @@ class Datum
 	
 	function getDag()
 	{
-		return $dag;
+		return $this->dag;
 	}
 	
 	function setDag($dagInput)
@@ -108,7 +108,7 @@ class Datum
 		if(is_int($dagInput))
 			if($dagInput <= 31 && $dagInput > 0)
 			{
-				$dag = $dagInput;
+				$this->dag = $dagInput;
 			} else
 				throw new Exception("De waarde \$dagInput mag niet hoger zijn dan 31 en niet lager dan 1.");
 		else
@@ -117,7 +117,7 @@ class Datum
 	
 	function getMaand()
 	{
-		return $maand;
+		return $this->maand;
 	}
 	
 	function setMaand($maandInput)
@@ -125,7 +125,7 @@ class Datum
 		if(is_int($maandInput))
 			if($maandInput <= 12 && $maandInput > 0)
 			{
-				$maand = $maandInput;
+				$this->maand = $maandInput;
 			} else
 				throw new Exception("De waarde \$maandInput mag niet hoger zijn dan 12 en niet lager dan 1.");
 		else
@@ -134,15 +134,15 @@ class Datum
 	
 	function getJaar()
 	{
-		return $jaar;
+		return $this->jaar;
 	}
 	
 	function setJaar($jaarInput)
 	{
 		if(is_int($jaarInput))
-			if($jaarInput > 1900)
+			if($jaarInput >= 1900)
 			{
-				$jaar = $jaarInput;
+				$this->jaar = $jaarInput;
 			} else
 				throw new Exception("De waarde \$maandInput mag niet lager zijn dan 1900.");
 		else
@@ -152,7 +152,7 @@ class Datum
 	function naarDatabaseWaarde()
 	{
 		$maandDagen = 0;
-		switch ($maand)
+		switch ($this->maand)
 		{
 			case 1:
 				$maandDagen = 0;
@@ -191,18 +191,20 @@ class Datum
 				$maandDagen = 334;
 				break;
 		}
-		return $dag + $maandDagen + ($jaar - 1900) * 365;
+		return $this->dag + $maandDagen + ($this->jaar - 1900) * 365;
 	}
 	
 	static function getDatabaseWaarde($databaseValue)
 	{
 		if(is_int($databaseValue))
 		{
+			//var_dump($databaseValue);
 			$jaarTijdelijk = $databaseValue / 365 + 1900;
 			$rest = $databaseValue % 365;
-			$maandTijdelijk = rest % 30;
-		
-			switch ($maand)
+			$maandTijdelijk = (int) $rest / 30 + 1;
+			var_dump($rest);
+			var_dump($maandTijdelijk);
+			switch ($maandTijdelijk)
 			{
 				case 1:
 					$rest -= 0;
@@ -244,9 +246,9 @@ class Datum
 			
 			$dagTijdelijk = $rest;
 			
-			return new Datum($dagTijdelijk, $maandTijdelijk, $jaarTijdelijk);
+			return new Datum((int) $dagTijdelijk, (int) $maandTijdelijk, (int) $jaarTijdelijk);
 		} else
-			throw new Exception("De ingevulde datadase waarde is niet geldig.");
+			throw new Exception("De ingevulde database waarde is niet geldig.");
 	}
 }
 ?>

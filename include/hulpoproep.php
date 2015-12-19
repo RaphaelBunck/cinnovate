@@ -6,28 +6,36 @@ class Hulpoproep
 {
 	private $id, $patient, $tijd;
 	
-	function Hulpoproep($idPatient, $tijdInput)
+	function Hulpoproep($idPatient, $tijdInput = 0)
 	{
-		$patient = new Patient($patientInput);
-		$tijd = $tijdInput;
+		if($tijdInput == 0)
+		{
+			$this->HulpoproepOpslaan($idPatient);
+		} else
+		{
+			$patient = new Patient($patientInput);
+			$tijd = $tijdInput;
+		}
 	}
 	
-	function Hulpoproep($idInput)
+	function HulpoproepOpslaan($idInput)
 	{
 		if(is_int($idInput))
 		{
-			$id = $idInput;
+			$this->id = $idInput;
 			
 			global $pdo;
 			
-			$query = "SELECT ID_patient AS 'id' FROM helpcalls WHERE id = " . $id . " LIMIT 1;";
+			$query = "SELECT ID_patient AS 'id', id_time AS 'tijd' FROM helpcalls WHERE id = " . $this->id . " LIMIT 1;";
 			
-			$queryPDO = $pdo($query);
-			$dataPDO = queryPDO->fetch(PDO::FETCH_ASSOC);
+			$queryPDO = $pdo->query($query);
+			$dataPDO = $queryPDO->fetch(PDO::FETCH_ASSOC);
 			
-			$patient = new Patient($dataPDO['id']);
+			$this->patient = new Patient((int) $dataPDO['id']);
+			var_dump((int) $dataPDO['id']);
+			$this->tijd = (int) $dataPDO['tijd'];
 		} else
-			throw new Exeption("De waarde \$idInput is geen geldige waarde, hij kan alleen maar een integer zijn.");
+			throw new Exception("De waarde \$idInput is geen geldige waarde, hij kan alleen maar een integer zijn.");
 	}
 	
 	function hulpoproepOpslaanDatabase()
@@ -40,25 +48,27 @@ class Hulpoproep
 			
 			$queryPDO = prepare($query);
 			$queryPDO->bindParam(":Patient_ID", $patient->getID());
-			$queryPDO->bindParam(":id_time", $tijd);
-			$
+			$queryPDO->bindParam(":id_time", $this->tijd);
+			$queryPDO->execute();
 		} catch (PDOException $e)
 		{
-			throw new Exeption($e);
+			throw new Exception($e);
 		}
 	}
 	
 	function getListViewData()
 	{
+		?><pre>
+		<?php var_dump($this);?></pre><?php
 		return "<div style=\"width: 100%; height: 4em; position: relative; \">
 						<div style=\"color: black; position: absolute; top: 1.5em;\">
 							<div style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\">
-								" . $patient->achternaam . ", " . $patient->voornaam . "
+								" . $this->getPatient()->getAchternaam() . ", " . $this->getPatient()->getVoornaam() . "
 							</div>
-							<small>Hulp geroepen op: " . date("D j F Y g:i", $tijd) . "</small>
+							<small>Hulp geroepen op: " . date("D j F Y g:i", $this->getTijd()) . "</small>
 						</div>
 						<div style=\"color: black; position: absolute; top: 0; right: 0;\">
-							<img style=\"height: 4em; width: 4em;\" src=\"./profile_picture/" . $patient->profielfoto . "\">
+							<img style=\"height: 4em; width: 4em;\" src=\"./profile_picture/" . $this->getPatient()->getProfielfoto() . "\">
 						</div>
 					</div><hr>";
 	}
@@ -75,49 +85,49 @@ class Hulpoproep
 			return $queryPDO->fetchAll(PDO::FETCH_ASSOC);
 		} catch(PDOException $e)
 		{
-			throw new Exeption($e);
+			throw new Exception($e);
 		}
 	}
 	
 	function getPatient()
 	{
-		return $patient;
+		return $this->patient;
 	}
 	
 	function setPatient($idPatient)
 	{
 		if(is_int($idPatient))
-			$patient = new Patient($idPatient);
+			$this->patient = new Patient($idPatient);
 		else
-			throw new Exeption("De waarde \$idPatient is moet een Integer zijn.");
+			throw new Exception("De waarde \$idPatient is moet een Integer zijn.");
 	}
 	
 	function getID()
 	{
-		return $id;
+		return $this->id;
 	}
 	
 	function setID($idInput)
 	{
 		if(is_int($idInput))
 		{
-			$id = $idInput;
-			Hulpoproep($id);
+			$this->id = $idInput;
+			Hulpoproep($this->getID());
 		} else
-			throw new Exeption("De waarde \$idInput moet een Integer zijn.");
+			throw new Exception("De waarde \$idInput moet een Integer zijn.");
 	}
 	
 	function getTijd()
 	{
-		return $tijd;
+		return $this->tijd;
 	}
 	
 	function setTijd($tijdInput)
 	{
 		if(is_int($tijdInput))
-			$tijd = $tijdInput;
+			$this->tijd = $tijdInput;
 		else
-			throw new Exeption("De waarde \$tijdInput moet een Integer zijn.");
+			throw new Exception("De waarde \$tijdInput moet een Integer zijn.");
 	}
 }
 

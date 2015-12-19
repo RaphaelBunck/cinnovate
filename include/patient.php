@@ -6,24 +6,30 @@ class Patient extends Persoon
 {
 	private $profielfoto;
 	
-	function Patient($patientID)
+	function Patient($patientID = -1)
 	{
-		if(is_numeric($patientID))
+		if($patientID == -1)
 		{
-			$id = $patientID;
-			gegevensOphalenUitDatabase();
+			PatientUpdate();
 		} else
-			Patient();
+		{
+			if(is_int($patientID))
+			{
+				$this->setID( $patientID);
+				$this->getDatabaseWaarde();
+			} else
+				$this->PatientUpdate();
+		}
 	}
 	
-	function Patient()
+	function PatientUpdate()
 	{
-		if($id >= 0)
+		if($this->getID() >= 0)
 		{
-			gegevensOphalenUitDatabase();
+			$this->getDatabaseWaarde();
 		} else
 		{
-			throw new Exeption("De variabele \$id heeft geen geldige waarde, roep eerst de functie setID() aan om de waarde in te stellen. Of gebruik de constructor met als argument het id van de patient ");
+			throw new Exception("De variabele \$id heeft geen geldige waarde, roep eerst de functie setID() aan om de waarde in te stellen. Of gebruik de constructor met als argument het id van de patient ");
 		}
 	}
 	
@@ -43,19 +49,19 @@ class Patient extends Persoon
 			FROM 
 				patients 
 			WHERE 
-				id = " . $id . " LIMIT 1;";
+				id = " . (int) $this->getID();
 		
 			$queryPDO = $pdo->query($query);
 			$patientResultaat = $queryPDO->fetch(PDO::FETCH_ASSOC);
-		
-			$voornaam = $patientResultaat['voornaam'];
-			$achternaam = $patientResultaat['achternaam'];
-			$geboortedatum = Datum.getDatabaseWaarde($patientResultaat['geboortedatum']);
-			$beschrijving = $patientResultaat['beschrijving'];
-			$profielfoto = $patientResultaat['profielfoto'];
+			var_dump($patientResultaat);
+			$this->voornaam = $patientResultaat['voornaam'];
+			$this->achternaam = $patientResultaat['achternaam'];
+			$this->geboortedatum = Datum::getDatabaseWaarde((int) $patientResultaat['geboortedatum']);
+			$this->beschrijving = $patientResultaat['beschrijving'];
+			$this->profielfoto = $patientResultaat['profielfoto'];
 		} catch (PDOException $e)
 		{
-			throw new Exeption($e);
+			throw new Exception($e);
 		}
 	}
 	
@@ -78,15 +84,15 @@ class Patient extends Persoon
 				id = " . $id . ";";
 		
 			$dataPDO = $pdo->prepare($query);
-			$dataPDO->bindParam(":voornaam", $voornaam);
-			$dataPDO->bindParam(":achternaam", $achternaam);
-			$dataPDO->bindParam(":geboortedatum", $geboortedatum->naarDatabaseWaarde());
-			$dataPDO->bindParam(":beschrijving", $beschrijving);
-			$dataPDO->bindParam(":profielfoto", $profielfoto);
+			$dataPDO->bindParam(":voornaam", $this->getVoornaam());
+			$dataPDO->bindParam(":achternaam", $this->getAchternaam());
+			$dataPDO->bindParam(":geboortedatum", $this->getGeboortedatum()->naarDatabaseWaarde());
+			$dataPDO->bindParam(":beschrijving", $this->getBeschrijving());
+			$dataPDO->bindParam(":profielfoto", $this->getProfielfoto());
 			$dataPDO->execute();
 		} catch (PDOException $e)
 		{
-			throw new Exeption($e);
+			throw new Exception($e);
 		}
 	}
 	
@@ -98,29 +104,29 @@ class Patient extends Persoon
 		{
 			$DatabaseQuery = "INSERT INTO links (master, patient) VALUES (:master, :patient);";
 			$dataPDO = $pdo->prepare($DatabaseQuery);
-			$dataPDO->bindParam(":master", $verzorger->id);
-			$dataPDO->bindParam(":patient", $this->id);
+			$dataPDO->bindParam(":master", $verzorger->getID());
+			$dataPDO->bindParam(":patient", $this->getID());
 	
 			$dataPDO->execute();
 			
 		} catch (PDOException $e)
 		{
-			throw new Exeption($e);
+			throw new Exception($e);
 		}
 	}
 	
 	function getProfielfoto()
 	{
-		return $profielfoto;
+		return $this->profielfoto;
 	}
 	
 	function setProfielfoto($profielfotoInput)
 	{
 		if(is_string($profielfotoInput))
 			if($profielfotoInput == "")
-				$profielfoto = "generic-profile.png";
+				$this->profielfoto = "generic-profile.png";
 			else
-				$profielfoto = $profielfotoInput;
+				$this->profielfoto = $profielfotoInput;
 		else
 			throw new Exception("De waarde \$profielfotoInput mag alleen maar een string zijn.");
 	}
@@ -134,21 +140,21 @@ class Patient extends Persoon
 	{
 		return "<div style=\"width: 100%; height: 4em; position: relative; \">
 					<div style=\"color: black; position: absolute; top: 1.5em;\">
-						<a style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\" href=\"/patienten_info.php?id=" . $berichtText['id'] . "\">
-							" . $achternaam . ", " . $voornaam . "
+						<a style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\" href=\"/patienten_info.php?id=" . $this->getID() . "\">
+							" . $this->getAchternaam() . ", " . $this->getVoornaam() . "
 						</a>
 					</div>
 					<div style=\"color: black; position: absolute; top: 0; right: 0;\">
-						<img style=\"height: 4em; width: 4em;\" src=\"./profile_picture/" . $profielfoto . "\">
+						<img style=\"height: 4em; width: 4em;\" src=\"./profile_picture/" . $this->getProfielfoto() . "\">
 					</div>
-				</div><hr>"
+				</div><hr>";
 	}
 
 	static function getLijstPatienten()
 	{
 		try
 		{
-			static $pdo;
+			global $pdo;
 		
 			$query = "SELECT id FROM patients WHERE 1";
 		
@@ -156,7 +162,7 @@ class Patient extends Persoon
 			return $queryPDO->fetchAll(PDO::FETCH_ASSOC);
 		} catch(PDOException $e)
 		{
-			throw new Exeption($e);
+			throw new Exception($e);
 		}
 	}
 }

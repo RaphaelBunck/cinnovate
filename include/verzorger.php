@@ -4,24 +4,30 @@ include_once "persoon.php";
 
 class Verzorger extends Persoon
 {	
-	function Verzorger($verzorgerID)
+	function Verzorger($verzorgerID = -1)
 	{
-		if(is_numeric($verzorgerID))
+		if($verzorgerID == -1)
 		{
-			$id = $verzorgerID;
-			gegevensOphalenUitDatabase();
+			VerzorgerUpdaten();
 		} else
-			Verzorger();
+		{
+			if(is_numeric($verzorgerID))
+			{
+				$this->setID($verzorgerID);
+				gegevensOphalenUitDatabase();
+			} else
+				Verzorger();
+		}
 	}
 	
-	function Verzorger()
+	function VerzorgerUpdaten()
 	{
-		if($id >= 0)
+		if($this->getID() >= 0)
 		{
 			gegevensOphalenUitDatabase();
 		} else
 		{
-			throw new Exeption("De variabele \$id heeft geen geldige waarde, roep eerst de functie setID() aan om de waarde in te stellen. Of gebruik de constructor met als argument het id van de verzorger ");
+			throw new Exception("De variabele \$id heeft geen geldige waarde, roep eerst de functie setID() aan om de waarde in te stellen. Of gebruik de constructor met als argument het id van de verzorger ");
 		}
 	}
 	
@@ -45,13 +51,13 @@ class Verzorger extends Persoon
 			$queryPDO = $pdo->query($query);
 			$verzorgerResultaat = $queryPDO->fetch(PDO::FETCH_ASSOC);
 		
-			$voornaam = $verzorgerResultaat['voornaam'];
-			$achternaam = $verzorgerResultaat['achternaam'];
-			$geboortedatum = Datum.getDatabaseWaarde($verzorgerResultaat['geboortedatum']);
-			$beschrijving = $verzorgerResultaat['beschrijving'];
+			$this->voornaam = $verzorgerResultaat['voornaam'];
+			$this->achternaam = $verzorgerResultaat['achternaam'];
+			$this->geboortedatum = Datum.getDatabaseWaarde($verzorgerResultaat['geboortedatum']);
+			$this->beschrijving = $verzorgerResultaat['beschrijving'];
 		} catch (PDOException $e)
 		{
-			throw new Exeption($e);
+			throw new Exception($e);
 		}
 	}
 	
@@ -70,17 +76,17 @@ class Verzorger extends Persoon
 				geboortedatum = :geboortedatum, 
 				beschrijving = :beschrijving,
 			WHERE 
-				id = " . $id . ";";
+				id = " . $this->getID() . ";";
 		
 			$dataPDO = $pdo->prepare($query);
-			$dataPDO->bindParam(":voornaam", $voornaam);
-			$dataPDO->bindParam(":achternaam", $achternaam);
-			$dataPDO->bindParam(":geboortedatum", $geboortedatum->naarDatabaseWaarde());
-			$dataPDO->bindParam(":beschrijving", $beschrijving);
+			$dataPDO->bindParam(":voornaam", $this->getVoornaam());
+			$dataPDO->bindParam(":achternaam", $this->getAchternaam());
+			$dataPDO->bindParam(":geboortedatum", $this->getGeboortedatum()->naarDatabaseWaarde());
+			$dataPDO->bindParam(":beschrijving", $this->getBeschrijving());
 			$dataPDO->execute();
 		} catch (PDOException $e)
 		{
-			throw new Exeption($e);
+			throw new Exception($e);
 		}
 	}
 	
@@ -108,7 +114,7 @@ class Verzorger extends Persoon
 			return $queryPDO->fetchAll(PDO::FETCH_ASSOC);
 		} catch(PDOException $e)
 		{
-			throw new Exeption($e);
+			throw new Exception($e);
 		}
 	}
 }

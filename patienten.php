@@ -2,6 +2,7 @@
 
 include_once "./include/hulpoproep.php";
 include_once "./include/verzorger.php";
+include_once "./include/hulpoproep.php";
 
 if(isset($_GET['id']))
 {	
@@ -30,9 +31,10 @@ if(isset($_GET['id']))
 					Hulpoproepen
 				</h3>
 				<?php
-				$hulpoproepen = Hulpoproepen->getLijstHulpoproepen();
+				$hulpoproepen = Hulpoproep::getLijstHulpoproepen();
 				foreach($hulpoproepen as $hulpoproep)
 				{
+					$hulpoproepObject = new Hulpoproep((int) $hulpoproep['id']);
 					if(isset($id))
 					{
 						$verzorger = new Verzorger($id);
@@ -40,12 +42,12 @@ if(isset($_GET['id']))
 						
 						foreach($patienten as $patient)
 						{
-							if($hulpoproep->getPatient()->getID() == $patient->getID())
-								echo $hulpoproep->getListViewData();
+							if($hulpoproepObject->getPatient()->getID() == $patient->getID())
+								echo $hulpoproepObject->getListViewData();
 						}
 					} else
 					{
-						echo $hulpoproep->getListViewData();
+						echo $hulpoproepObject->getListViewData();
 					}
 				
 				}
@@ -56,18 +58,18 @@ if(isset($_GET['id']))
 					Patienten:
 				</h3>
 				<?php
-				if($id)
+				if(isset($id))
 				{	
 					$verzorger = new Verzorger($id);
 					$patienten = $verzorger->getLijstPatienten();
 				} else
 				{
-					$patienten = Patient->getLijstPatienten();
+					$patienten = Patient::getLijstPatienten();
 				}
 				
 				foreach($patienten as $patient)
 				{
-					$patient = new Patient($patienten['id']);
+					$patient = new Patient($patient['id']);
 					echo $patient->getListViewData();
 				}
 				?>
