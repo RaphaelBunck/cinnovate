@@ -6,9 +6,9 @@ include_once "./include/hulpoproep.php";
 
 if(isset($_GET['id']))
 {	
-	if(is_int($_GET['id']))
+	if(is_numeric($_GET['id']))
 	{
-		$id = $_GET['id'];
+		$id = (int) $_GET['id'];
 	}
 }
 
@@ -42,6 +42,7 @@ if(isset($_GET['id']))
 						
 						foreach($patienten as $patient)
 						{
+							$patient = new Patient((int) $patient['id']);
 							if($hulpoproepObject->getPatient()->getID() == $patient->getID())
 								echo $hulpoproepObject->getListViewData();
 						}
@@ -69,8 +70,8 @@ if(isset($_GET['id']))
 				
 				foreach($patienten as $patient)
 				{
-					$patient = new Patient($patient['id']);
-					echo $patient->getListViewData();
+					$patientObject = new Patient((int) $patient['id']);
+					echo $patientObject->getListViewData();
 				}
 				?>
 			</div>

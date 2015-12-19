@@ -32,7 +32,6 @@ class Hulpoproep
 			$dataPDO = $queryPDO->fetch(PDO::FETCH_ASSOC);
 			
 			$this->patient = new Patient((int) $dataPDO['id']);
-			var_dump((int) $dataPDO['id']);
 			$this->tijd = (int) $dataPDO['tijd'];
 		} else
 			throw new Exception("De waarde \$idInput is geen geldige waarde, hij kan alleen maar een integer zijn.");
@@ -58,12 +57,10 @@ class Hulpoproep
 	
 	function getListViewData()
 	{
-		?><pre>
-		<?php var_dump($this);?></pre><?php
 		return "<div style=\"width: 100%; height: 4em; position: relative; \">
 						<div style=\"color: black; position: absolute; top: 1.5em;\">
 							<div style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\">
-								" . $this->getPatient()->getAchternaam() . ", " . $this->getPatient()->getVoornaam() . "
+								" . $this->getPatient()->achternaam . ", " . $this->getPatient()->voornaam . "
 							</div>
 							<small>Hulp geroepen op: " . date("D j F Y g:i", $this->getTijd()) . "</small>
 						</div>

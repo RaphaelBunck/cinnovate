@@ -198,12 +198,10 @@ class Datum
 	{
 		if(is_int($databaseValue))
 		{
-			//var_dump($databaseValue);
-			$jaarTijdelijk = $databaseValue / 365 + 1900;
+			$jaarTijdelijk = ((int) $databaseValue / 365) + 1900;
 			$rest = $databaseValue % 365;
-			$maandTijdelijk = (int) $rest / 30 + 1;
-			var_dump($rest);
-			var_dump($maandTijdelijk);
+			$maandTijdelijk = intval($rest / 30 + 1);
+			
 			switch ($maandTijdelijk)
 			{
 				case 1:

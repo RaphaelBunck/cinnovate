@@ -53,12 +53,12 @@ class Patient extends Persoon
 		
 			$queryPDO = $pdo->query($query);
 			$patientResultaat = $queryPDO->fetch(PDO::FETCH_ASSOC);
-			var_dump($patientResultaat);
+			
 			$this->voornaam = $patientResultaat['voornaam'];
 			$this->achternaam = $patientResultaat['achternaam'];
 			$this->geboortedatum = Datum::getDatabaseWaarde((int) $patientResultaat['geboortedatum']);
 			$this->beschrijving = $patientResultaat['beschrijving'];
-			$this->profielfoto = $patientResultaat['profielfoto'];
+			$this->setProfielfoto($patientResultaat['profielfoto']);
 		} catch (PDOException $e)
 		{
 			throw new Exception($e);
@@ -122,8 +122,8 @@ class Patient extends Persoon
 	
 	function setProfielfoto($profielfotoInput)
 	{
-		if(is_string($profielfotoInput))
-			if($profielfotoInput == "")
+		if(is_string($profielfotoInput) or is_null($profielfotoInput))
+			if($profielfotoInput == "" or is_null($profielfotoInput))
 				$this->profielfoto = "generic-profile.png";
 			else
 				$this->profielfoto = $profielfotoInput;
@@ -141,7 +141,7 @@ class Patient extends Persoon
 		return "<div style=\"width: 100%; height: 4em; position: relative; \">
 					<div style=\"color: black; position: absolute; top: 1.5em;\">
 						<a style=\"color: black; font-family: Arial, sans-serif; text-decoration: none;\" href=\"/patienten_info.php?id=" . $this->getID() . "\">
-							" . $this->getAchternaam() . ", " . $this->getVoornaam() . "
+							" . $this->achternaam . ", " . $this->voornaam . "
 						</a>
 					</div>
 					<div style=\"color: black; position: absolute; top: 0; right: 0;\">

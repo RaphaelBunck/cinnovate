@@ -14,9 +14,9 @@ class Verzorger extends Persoon
 			if(is_numeric($verzorgerID))
 			{
 				$this->setID($verzorgerID);
-				gegevensOphalenUitDatabase();
+				$this->getDatabaseWaarde();
 			} else
-				Verzorger();
+				$this->VerzorgerUpdaten();
 		}
 	}
 	
@@ -24,7 +24,7 @@ class Verzorger extends Persoon
 	{
 		if($this->getID() >= 0)
 		{
-			gegevensOphalenUitDatabase();
+			$this->getDatabaseWaarde();
 		} else
 		{
 			throw new Exception("De variabele \$id heeft geen geldige waarde, roep eerst de functie setID() aan om de waarde in te stellen. Of gebruik de constructor met als argument het id van de verzorger ");
@@ -42,18 +42,18 @@ class Verzorger extends Persoon
 				voornaam, 
 				achternaam, 
 				geboortedatum, 
-				beschrijving, 
+				beschrijving
 			FROM 
-				masters 
+				master 
 			WHERE 
-				id = " . $id . " LIMIT 1;";
+				id = " . (int) $this->getID();
 		
 			$queryPDO = $pdo->query($query);
 			$verzorgerResultaat = $queryPDO->fetch(PDO::FETCH_ASSOC);
 		
 			$this->voornaam = $verzorgerResultaat['voornaam'];
 			$this->achternaam = $verzorgerResultaat['achternaam'];
-			$this->geboortedatum = Datum.getDatabaseWaarde($verzorgerResultaat['geboortedatum']);
+			$this->geboortedatum = Datum::getDatabaseWaarde((int) $verzorgerResultaat['geboortedatum']);
 			$this->beschrijving = $verzorgerResultaat['beschrijving'];
 		} catch (PDOException $e)
 		{
@@ -79,10 +79,10 @@ class Verzorger extends Persoon
 				id = " . $this->getID() . ";";
 		
 			$dataPDO = $pdo->prepare($query);
-			$dataPDO->bindParam(":voornaam", $this->getVoornaam());
-			$dataPDO->bindParam(":achternaam", $this->getAchternaam());
+			$dataPDO->bindParam(":voornaam", $this->voornaam);
+			$dataPDO->bindParam(":achternaam", $this->achternaam);
 			$dataPDO->bindParam(":geboortedatum", $this->getGeboortedatum()->naarDatabaseWaarde());
-			$dataPDO->bindParam(":beschrijving", $this->getBeschrijving());
+			$dataPDO->bindParam(":beschrijving", $this->beschrijving);
 			$dataPDO->execute();
 		} catch (PDOException $e)
 		{
@@ -92,7 +92,7 @@ class Verzorger extends Persoon
 	
 	function updateVerzorger()
 	{
-		Verzorger();
+		$this->Verzorger();
 	}
 	
 	function getLijstPatienten()
@@ -103,11 +103,11 @@ class Verzorger extends Persoon
 			
 			$query = "
 			SELECT 
-				links.patient AS 'id'
+				patient AS 'id'
 			FROM 
 				links 
 			WHERE 
-				links.master = " . $id;
+				master = " . $this->getID();
 			
 			$queryPDO = $pdo->query($query);
 			
