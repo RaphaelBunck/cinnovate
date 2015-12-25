@@ -8,19 +8,19 @@ if(isset($_POST['voornaam'], $_POST['achternaam'], $_POST['ageDag'], $_POST['age
 {
 	if(is_null($_POST['voornaam']) and is_null($_POST['achternaam']) and is_null($_POST['ageDag']) and is_null($_POST['ageMaand']) and is_null($_POST['ageJaar']) and is_null($_POST['beschrijving']))
 		echo $error;
-	elseif(is_int($_POST['ageDag']) and is_int($_POST['ageMaand']) and is_int($_POST['ageJaar']) and is_int($_GET['id']))
+	elseif(is_numeric($_POST['ageDag']) and is_numeric($_POST['ageMaand']) and is_numeric($_POST['ageJaar']) and is_numeric($_GET['id']))
 	{
 		$voornaam = $_POST['voornaam'];
 		$achternaam = $_POST['achternaam'];
 		$beschrijving = $_POST['beschrijving'];
-		$id = $_GET['id'];
+		$id = (int) $_GET['id'];
 		
 		$patient = new Patient($id);
 		$patient->setVoornaam($voornaam);
 		$patient->setAchternaam($achternaam);
-		$patient->setGeboortedatum($_POST['ageDag'], $_POST['ageMaand'], $_POST['ageJaar']);
+		$patient->setGeboortedatum((int) $_POST['ageDag'], (int) $_POST['ageMaand'], (int) $_POST['ageJaar']);
 		$patient->setBeschrijving($beschrijving);
-		$patient->updatePatient();
+		$patient->setDatabaseWaarde();
 		
 		header("Location: ./patienten.php");
 	} else

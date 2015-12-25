@@ -49,7 +49,7 @@ if(isset($_GET['id']))
 						<fieldset>
 							<legend>Overige informatie:</legend>
 							<fieldset>
-								<legend>Leeftijd:</legend>
+								<legend>Geboortedatum:</legend>
 								<input type="number" name="ageDag" value="<?=$geboortedatum->getDag()?>">
 								<input type="number" name="ageMaand" value="<?=$geboortedatum->getMaand()?>">
 								<input type="number" name="ageJaar" value="<?=$geboortedatum->getJaar()?>">

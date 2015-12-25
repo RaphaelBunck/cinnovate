@@ -10,7 +10,7 @@ class Patient extends Persoon
 	{
 		if($patientID == -1)
 		{
-			PatientUpdate();
+			$this->PatientUpdate();
 		} else
 		{
 			if(is_int($patientID))
@@ -77,20 +77,15 @@ class Patient extends Persoon
 			UPDATE 
 				patients 
 			SET 
-				voornaam = :voornaam, 
-				achternaam = :achternaam, 
-				geboortedatum = :geboortedatum, 
-				beschrijving = :beschrijving,
-				profielfoto = :profielfoto
+				voornaam = '" . parent::getVoornaam() . "',
+				achternaam = '" . parent::getAchternaam() . "', 
+				geboortedatum = '" . parent::getGeboortedatum()->naarDatabaseWaarde() . "', 
+				beschrijving = '" . parent::getBeschrijving() . "',
+				profielfoto = '" . $this->getProfielfoto() . "'
 			WHERE 
-				id = " . $id . ";";
+				id = " . parent::getID() . ";";
 		
 			$dataPDO = $pdo->prepare($query);
-			$dataPDO->bindParam(":voornaam", parent::getVoornaam());
-			$dataPDO->bindParam(":achternaam", parent::getAchternaam());
-			$dataPDO->bindParam(":geboortedatum", parent::getGeboortedatum()->naarDatabaseWaarde());
-			$dataPDO->bindParam(":beschrijving", parent::getBeschrijving());
-			$dataPDO->bindParam(":profielfoto", $this->getProfielfoto());
 			$dataPDO->execute();
 		} catch (PDOException $e)
 		{
@@ -135,7 +130,7 @@ class Patient extends Persoon
 	
 	function updatePatient()
 	{
-		Patient();
+		$this->Patient();
 	}
 	
 	function getListViewData()
