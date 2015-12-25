@@ -99,10 +99,8 @@ class Patient extends Persoon
 		
 		try
 		{
-			$DatabaseQuery = "INSERT INTO links (master, patient) VALUES (:master, :patient);";
+			$DatabaseQuery = "INSERT INTO links (master, patient) VALUES (" . $verzorger->getID() . ", " . parent::getID() . ");";
 			$dataPDO = $pdo->prepare($DatabaseQuery);
-			$dataPDO->bindParam(":master", $verzorger->getID());
-			$dataPDO->bindParam(":patient", $this->getID());
 	
 			$dataPDO->execute();
 			
