@@ -13,8 +13,8 @@ class Hulpoproep
 			$this->HulpoproepOpslaan($idPatient);
 		} else
 		{
-			$patient = new Patient($patientInput);
-			$tijd = $tijdInput;
+			$this->patient = new Patient($idPatient);
+			$this->tijd = $tijdInput;
 		}
 	}
 	
@@ -43,10 +43,11 @@ class Hulpoproep
 		
 		try
 		{
+			$patientId = $this->patient->getID();
 			$query = "INSERT INTO helpcalls (id_patient, id_time) VALUES (:id_patient, :id_time)";
 			
-			$queryPDO = prepare($query);
-			$queryPDO->bindParam(":Patient_ID", $patient->getID());
+			$queryPDO = $pdo->prepare($query);
+			$queryPDO->bindParam(":id_patient", $patientId);
 			$queryPDO->bindParam(":id_time", $this->tijd);
 			$queryPDO->execute();
 		} catch (PDOException $e)
