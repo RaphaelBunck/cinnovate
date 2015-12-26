@@ -1,11 +1,11 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 
 <head>
 
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Chat</title>
+    <title>Patiëntenchat</title>
     
     <link rel="stylesheet" href="style.css" type="text/css" />
     
@@ -14,7 +14,7 @@
     <script type="text/javascript">
     
         // ask user for name with popup prompt    
-        var name = prompt("Enter your chat name:", "Guest");
+        var name = <?php if(isset($_GET['name'])) echo '"' . $_GET['name'] . '"'; else echo 'prompt("Enter your chat name:", "Guest")';?>;
         
         // default name is 'Guest'
     	if (!name || name === ' ') {
@@ -84,14 +84,14 @@
 
     <div id="page-wrap">
     
-        <h2>jQuery/PHP Chat</h2>
+        <h2>Patiëntenchat</h2>
         
         <p id="name-area"></p>
         
         <div id="chat-wrap"><div id="chat-area"></div></div>
         
         <form id="send-message-area">
-            <p>Your message: </p>
+            <p>Uw Bericht: </p>
             <textarea id="sendie" maxlength = '100' ></textarea>
         </form>
     

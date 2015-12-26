@@ -75,6 +75,7 @@ if(isset($_GET['id']))
 				}
 				?>
 			</div>
+			<a href="./chat<?php if(isset($verzorger)) echo "?name=" . $verzorger->getVoornaam();?>">Naar de Patiëntenchat</a>
 		</div>
 	</body>
 </html>

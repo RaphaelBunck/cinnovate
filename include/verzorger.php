@@ -49,12 +49,14 @@ class Verzorger extends Persoon
 				id = " . (int) $this->getID();
 		
 			$queryPDO = $pdo->query($query);
-			$verzorgerResultaat = $queryPDO->fetch(PDO::FETCH_ASSOC);
+			$masterResultaat = $queryPDO->fetch(PDO::FETCH_ASSOC);
 			
-			$this->voornaam = $verzorgerResultaat['voornaam'];
-			$this->achternaam = $verzorgerResultaat['achternaam'];
-			$this->geboortedatum = Datum::getDatabaseWaarde((int) $verzorgerResultaat['geboortedatum']);
-			$this->beschrijving = $verzorgerResultaat['beschrijving'];
+			$geboortedatum = Datum::getDatabaseWaarde((int) $masterResultaat['geboortedatum']);			
+			
+			parent::setVoornaam($masterResultaat['voornaam']);
+			parent::setAchternaam($masterResultaat['achternaam']);
+			parent::setGeboortedatum($geboortedatum->getDag(), $geboortedatum->getMaand(), $geboortedatum->getJaar());
+			parent::setBeschrijving($masterResultaat['beschrijving']);
 		} catch (PDOException $e)
 		{
 			throw new Exception($e);
@@ -69,20 +71,16 @@ class Verzorger extends Persoon
 		
 			$query = "
 			UPDATE 
-				masters 
+				master
 			SET 
-				voornaam = :voornaam, 
-				achternaam = :achternaam, 
-				geboortedatum = :geboortedatum, 
-				beschrijving = :beschrijving,
+				voornaam = " . parent::getVoornaam() . ", 
+				achternaam = " . parent::getAchternaam() . ", 
+				geboortedatum = " . parent::getGeboortedatum()->naarDatabaseWaarde() . ", 
+				beschrijving = " . parent::getBeschrijving() . ",
 			WHERE 
 				id = " . $this->getID() . ";";
 		
 			$dataPDO = $pdo->prepare($query);
-			$dataPDO->bindParam(":voornaam", $this->voornaam);
-			$dataPDO->bindParam(":achternaam", $this->achternaam);
-			$dataPDO->bindParam(":geboortedatum", $this->getGeboortedatum()->naarDatabaseWaarde());
-			$dataPDO->bindParam(":beschrijving", $this->beschrijving);
 			$dataPDO->execute();
 		} catch (PDOException $e)
 		{
